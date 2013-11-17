@@ -25,6 +25,12 @@
                    kind="IMPORTANT_FILES_FOLDER">
       <itemPath>Makefile</itemPath>
     </logicalFolder>
+    <itemPath>src/Application.cpp</itemPath>
+    <itemPath>inc/Application.h</itemPath>
+    <itemPath>src/Configurations.cpp</itemPath>
+    <itemPath>inc/Configurations.h</itemPath>
+    <itemPath>src/SimpleNumberParser.cpp</itemPath>
+    <itemPath>inc/SimpleNumberParser.h</itemPath>
   </logicalFolder>
   <projectmakefile>Makefile</projectmakefile>
   <confs>
@@ -34,6 +40,11 @@
         <compilerSet>default</compilerSet>
       </toolsSet>
       <compileType>
+        <ccTool>
+          <incDir>
+            <pElem>inc</pElem>
+          </incDir>
+        </ccTool>
       </compileType>
     </conf>
     <conf name="Release" type="1">

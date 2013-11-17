@@ -34,7 +34,10 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
-	${OBJECTDIR}/main.o
+	${OBJECTDIR}/main.o \
+	${OBJECTDIR}/src/SimpleNumberParser.o \
+	${OBJECTDIR}/src/Application.o \
+	${OBJECTDIR}/src/Configurations.o
 
 
 # C Compiler Flags
@@ -64,7 +67,22 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/hugefilesorter: ${OBJECTFILES}
 ${OBJECTDIR}/main.o: main.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
-	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/main.o main.cpp
+	$(COMPILE.cc) -g -Iinc -MMD -MP -MF $@.d -o ${OBJECTDIR}/main.o main.cpp
+
+${OBJECTDIR}/src/SimpleNumberParser.o: src/SimpleNumberParser.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src
+	${RM} $@.d
+	$(COMPILE.cc) -g -Iinc -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/SimpleNumberParser.o src/SimpleNumberParser.cpp
+
+${OBJECTDIR}/src/Application.o: src/Application.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src
+	${RM} $@.d
+	$(COMPILE.cc) -g -Iinc -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/Application.o src/Application.cpp
+
+${OBJECTDIR}/src/Configurations.o: src/Configurations.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src
+	${RM} $@.d
+	$(COMPILE.cc) -g -Iinc -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/Configurations.o src/Configurations.cpp
 
 # Subprojects
 .build-subprojects:
