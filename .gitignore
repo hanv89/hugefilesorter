@@ -11,3 +11,6 @@
 *.lai
 *.la
 *.a
+/HugeFileSorter/nbproject/private/
+/HugeFileSorter/build/Debug/
+/HugeFileSorter/dist/Debug/
