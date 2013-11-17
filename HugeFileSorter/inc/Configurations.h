@@ -20,8 +20,8 @@ public:
     static Configurations* getInstance();
     static void deInstance();
     void initialize(int argc,char** argv);
-    string getInput();
-    string getOutput();
+    string& getInput();
+    string& getOutput();
     int getPartSize();
     int getMergeCount();
 private:

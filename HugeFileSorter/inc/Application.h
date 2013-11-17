@@ -6,11 +6,14 @@
  */
 #include <string>
 #include <vector>
+#include "iostream"
 #ifndef APPLICATION_H
 #define	APPLICATION_H
 using namespace std;
 class Application {
 public:
+    
+    
     Application();
     virtual ~Application();
     
@@ -23,9 +26,18 @@ private:
     void preprocess();
     void process();
     void sortParts();
-    void mergeParts();
+//    void mergeParts();
+    void mergeParts(vector<string>& _result, const vector<string>& parts, int mergeCount);
     
 private:
+    
+    struct {
+            bool operator()(const string& a, const string& b)
+            {   
+                return a.compare(b) < 0;
+            }   
+        } StringLess;
+        
     static Application* m_Instance;
     
     vector<string> m_PartFiles;

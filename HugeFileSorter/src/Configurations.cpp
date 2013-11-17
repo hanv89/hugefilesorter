@@ -31,11 +31,11 @@ void Configurations::deInstance(){
 
 void Configurations::initialize(int argc,char** argv){
     if (argc == 3){
-        m_Input(argv[1]);
-        m_Output(argv[2]);
+        m_Input = argv[1];
+        m_Output = argv[2];
     } else if (argc == 5){
-        m_Input(argv[1]);
-        m_Output(argv[2]);
+        m_Input = argv[1];
+        m_Output = argv[2];
         
         bool error;
         int partSize = SimpleNumberParser::parseInt(argv[3],error);
@@ -49,10 +49,10 @@ void Configurations::initialize(int argc,char** argv){
         }
     }
 }
-string Configurations::getInput(){
+string& Configurations::getInput(){
     return m_Input;
 }
-string Configurations::getOutput(){
+string& Configurations::getOutput(){
     return m_Output;
 }
 int Configurations::getPartSize(){
