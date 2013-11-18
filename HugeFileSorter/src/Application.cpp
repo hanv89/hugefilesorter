@@ -90,29 +90,35 @@ void Application::sortParts(){
     for (int fileIndex = 0; fileIndex < m_PartFiles.size(); fileIndex++){
         cout << "\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b";
         cout << "Sorting part " << (fileIndex + 1) << " of " << m_PartFiles.size();
-        vector<string> lines;
+        vector<string*>* lines = new vector<string*>();
         
         ifstream* ifs = new ifstream;
         ifs->open(m_PartFiles[fileIndex].c_str());
         
         string line;
         while (getline(*ifs,line)){
-            lines.push_back(line);
             
+            lines->push_back(new string(line));            
         }
+        
         
         ifs->close();
         delete ifs;
         
-        std::sort(lines.begin(),lines.end(),StringLess);
+        std::sort(lines->begin(),lines->end(),StringLess);
         
         ofstream* ofs = new ofstream;
         ofs->open(m_PartFiles[fileIndex].c_str(), std::ofstream::out | std::ofstream::trunc);
-        for (int lineIndex = 0; lineIndex < lines.size(); lineIndex ++){
-            *ofs << lines[lineIndex] << endl;
+        for (int lineIndex = 0; lineIndex < lines->size(); lineIndex ++){
+            *ofs << *(lines->at(lineIndex)) << endl;
+            
         }
         ofs->close();  
-        delete ofs;
+        delete ofs;        
+        
+        lines->clear();
+        delete lines;
+        
     }
     cout << endl;
 }

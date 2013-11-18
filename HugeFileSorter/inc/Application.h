@@ -32,9 +32,9 @@ private:
 private:
     
     struct {
-            bool operator()(const string& a, const string& b)
+            bool operator()(const string* a, const string* b)
             {   
-                return a.compare(b) < 0;
+                return a->compare(*b) < 0;
             }   
         } StringLess;
         
