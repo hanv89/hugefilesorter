@@ -116,6 +116,9 @@ void Application::sortParts(){
         ofs->close();  
         delete ofs;        
         
+        for (int lineIndex = 0; lineIndex < lines->size(); lineIndex ++){
+            delete lines->at(lineIndex);            
+        }
         lines->clear();
         delete lines;
         
