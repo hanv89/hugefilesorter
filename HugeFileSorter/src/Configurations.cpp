@@ -10,8 +10,8 @@
 Configurations * Configurations::m_Instance = NULL;
 
 Configurations::Configurations() {
-    m_partSize = 100000;
-    m_mergeCount = 1;    
+    m_partSize = 10000000;
+     
 }
 
 Configurations::~Configurations() {
@@ -33,7 +33,7 @@ void Configurations::initialize(int argc,char** argv){
     if (argc == 3){
         m_Input = argv[1];
         m_Output = argv[2];
-    } else if (argc == 5){
+    } else if (argc == 4){
         m_Input = argv[1];
         m_Output = argv[2];
         
@@ -43,10 +43,7 @@ void Configurations::initialize(int argc,char** argv){
             m_partSize = partSize;
         }
         
-        int mergeCount = SimpleNumberParser::parseInt(argv[4],error);
-        if (!error){
-            m_mergeCount = mergeCount;
-        }
+        
     }
 }
 string& Configurations::getInput(){
@@ -57,8 +54,5 @@ string& Configurations::getOutput(){
 }
 int Configurations::getPartSize(){
     return m_partSize;
-}
-int Configurations::getMergeCount(){
-    return m_mergeCount;
 }
 

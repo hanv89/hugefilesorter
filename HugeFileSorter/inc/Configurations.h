@@ -23,13 +23,11 @@ public:
     string& getInput();
     string& getOutput();
     int getPartSize();
-    int getMergeCount();
 private:
     static Configurations* m_Instance;
     string m_Input;
     string m_Output;
     int m_partSize;
-    int m_mergeCount;
 };
 
 #endif	/* CONFIGURATIONS_H */

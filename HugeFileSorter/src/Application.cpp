@@ -33,6 +33,7 @@ void Application::deInstance(){
 
 void Application::run(){
     preprocess();
+    sortParts();
     process();
 }
     
@@ -71,7 +72,9 @@ void Application::preprocess(){
             
             ofs->close();
             
-            currentPartName = "part_0_" + currentPartIndex; 
+            stringstream ss;
+            ss << "part_0_" << currentPartIndex;
+            currentPartName =  ss.str();
             m_PartFiles.push_back(currentPartName);
             ofs->open(currentPartName.c_str());
         }
@@ -85,7 +88,8 @@ void Application::preprocess(){
 
 void Application::sortParts(){    
     for (int fileIndex = 0; fileIndex < m_PartFiles.size(); fileIndex++){
-        
+        cout << "\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b";
+        cout << "Sorting part " << (fileIndex + 1) << " of " << m_PartFiles.size();
         vector<string> lines;
         
         ifstream* ifs = new ifstream;
@@ -98,23 +102,27 @@ void Application::sortParts(){
         }
         
         ifs->close();
-        
+        delete ifs;
         
         std::sort(lines.begin(),lines.end(),StringLess);
         
-        ofstream* ofs;
-        ofs->open(m_PartFiles[fileIndex].c_str(), std::fstream::out | std::fstream::trunc);
-        for (int lineIndex; lineIndex < lines.size(); lineIndex ++){
+        ofstream* ofs = new ofstream;
+        ofs->open(m_PartFiles[fileIndex].c_str(), std::ofstream::out | std::ofstream::trunc);
+        for (int lineIndex = 0; lineIndex < lines.size(); lineIndex ++){
             *ofs << lines[lineIndex] << endl;
         }
-        ofs->close();        
+        ofs->close();  
+        delete ofs;
     }
+    cout << endl;
 }
 
 void Application::mergeParts(vector<string>& _result, const vector<string>& parts, int mergeCount){
-    int newPartCount = (parts.size() / 2) + 1;
+    int newPartCount = (parts.size() / 2) + (parts.size() % 2);
     
     for (int newPartIndex = 0; newPartIndex < newPartCount; newPartIndex++){
+        cout << "\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b";
+        cout << "Merging part " << (newPartIndex + 1) << " of " << newPartCount << " at merge step " << mergeCount;
         vector<ifstream*> partISs;
         ofstream* ofs = new ofstream;
         string currentPartGroup;
@@ -125,52 +133,71 @@ void Application::mergeParts(vector<string>& _result, const vector<string>& part
             ss << "part_" << mergeCount << "_" << newPartIndex;
             currentPartGroup = ss.str();
         }
-        _result.push_back(currentPartGroup);
-        ofs->open(currentPartGroup.c_str());
         
         int lastIndex = (newPartIndex + 1)*2;        
         lastIndex = lastIndex > parts.size() ? parts.size() : lastIndex;
         
+        if ((lastIndex - newPartIndex * 2) <= 1){
+             
+            _result.push_back(parts[lastIndex-1]);
         
-        for (int i = newPartIndex * 2; i < lastIndex; i++){
-            ifstream* ifs = new ifstream;
-            ifs->open(parts[i].c_str());
-            partISs.push_back(ifs);
-        }
+        } else {
+           _result.push_back(currentPartGroup);
+           ofs->open(currentPartGroup.c_str());
         
-        //Do read and merge
-        string line1;
-        string line2;
-        getline(*(partISs[0]),line1);
-        getline(*(partISs[1]),line2);
-        while (true){
-            if(line1.compare(line2) < 0){
-                *ofs << line1 << endl;
-                if (!getline(*(partISs[0]),line1)){
-                    break;
-                }
-            } else {
-                *ofs << line2 << endl;
-                 if (!getline(*(partISs[1]),line2)){
-                    break;
+        
+        
+        
+            for (int i = newPartIndex * 2; i < lastIndex; i++){
+                ifstream* ifs = new ifstream;
+                ifs->open(parts[i].c_str());
+                partISs.push_back(ifs);
+            }
+
+            //Do read and merge
+            string line1;
+            string line2;
+            getline(*(partISs[0]),line1);
+            getline(*(partISs[1]),line2);
+            while (true){
+                if(line1.compare(line2) < 0){
+                    *ofs << line1 << endl;
+                    if (!getline(*(partISs[0]),line1)){
+                        break;
+                    }
+                } else {
+                    *ofs << line2 << endl;
+                     if (!getline(*(partISs[1]),line2)){
+                        break;
+                    }
                 }
             }
-        }
-        
-        while (getline(*(partISs[1]),line2)) {
-            *ofs << line2 << endl;
-        }
-        while (getline(*(partISs[0]),line1)) {
-            *ofs << line1 << endl;
-        }
 
-        for (int i = 0; i<partISs.size(); i++){
-            partISs[i]->close();
+            while (getline(*(partISs[1]),line2)) {
+                *ofs << line2 << endl;
+            }
+            while (getline(*(partISs[0]),line1)) {
+                *ofs << line1 << endl;
+            }
+
+            for (int i = 0; i<partISs.size(); i++){
+                partISs[i]->close();
+                delete partISs[i];
+            }
+            partISs.clear();
+
+            ofs->close();
+            
+            //remove merged part file
+            for (int i = newPartIndex * 2; i < lastIndex; i++){
+                remove(parts[i].c_str());                
+            }
+            
         }
-        
-        ofs->close();
+        delete ofs;
         
     }
+    cout << endl;
     
 //    vector<string> tempPartFiles = m_PartFiles;    
 //    m_PartFiles.clear();    
@@ -206,10 +233,11 @@ void Application::process(){
     vector<string> fileList = m_PartFiles;
     int index = 0;
     do {
+        index ++;
         vector<string> oldFileList = fileList;
         fileList.clear();
         mergeParts(fileList, oldFileList, index);
-        index ++;
+        
     } while(fileList.size() > 1);   
     
 }
