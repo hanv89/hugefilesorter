@@ -22,7 +22,6 @@ AS=as
 
 # Macros
 CND_PLATFORM=GNU-Linux-x86
-CND_DLIB_EXT=so
 CND_CONF=Release
 CND_DISTDIR=dist
 CND_BUILDDIR=build
@@ -36,9 +35,9 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 # Object Files
 OBJECTFILES= \
 	${OBJECTDIR}/main.o \
+	${OBJECTDIR}/src/SimpleNumberParser.o \
 	${OBJECTDIR}/src/Application.o \
-	${OBJECTDIR}/src/Configurations.o \
-	${OBJECTDIR}/src/SimpleNumberParser.o
+	${OBJECTDIR}/src/Configurations.o
 
 
 # C Compiler Flags
@@ -63,12 +62,17 @@ LDLIBSOPTIONS=
 
 ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/hugefilesorter: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
-	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/hugefilesorter ${OBJECTFILES} ${LDLIBSOPTIONS}
+	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/hugefilesorter ${OBJECTFILES} ${LDLIBSOPTIONS} 
 
 ${OBJECTDIR}/main.o: main.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -Iinc -MMD -MP -MF $@.d -o ${OBJECTDIR}/main.o main.cpp
+
+${OBJECTDIR}/src/SimpleNumberParser.o: src/SimpleNumberParser.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -Iinc -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/SimpleNumberParser.o src/SimpleNumberParser.cpp
 
 ${OBJECTDIR}/src/Application.o: src/Application.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
@@ -79,11 +83,6 @@ ${OBJECTDIR}/src/Configurations.o: src/Configurations.cpp
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -Iinc -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/Configurations.o src/Configurations.cpp
-
-${OBJECTDIR}/src/SimpleNumberParser.o: src/SimpleNumberParser.cpp 
-	${MKDIR} -p ${OBJECTDIR}/src
-	${RM} $@.d
-	$(COMPILE.cc) -O2 -Iinc -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/SimpleNumberParser.o src/SimpleNumberParser.cpp
 
 # Subprojects
 .build-subprojects:
