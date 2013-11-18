@@ -10,9 +10,9 @@ RUN:
 ./dist/Release/GNU-Linux-x86/hugefilesorter inputfile outputfile (partsize = 10mB)
 
 DESC:
-This project try to optimize memory consumtion for large file content sorting problem. I built this base on the idea of merge sort.
+This project tries to optimize memory consumtion for large file content sorting problem. I built this base on the idea of merge sort.
 
-Input file is splited into parts at a predefined size (default is 10mB).
+Input file is splitted into parts at a predefined size (default is 10mB).
 The parts is then sorted by quicksort.
 Sorted parts are merged pair by pair. The result of this is a list of new larger parts. The process is repeated until there is only 1 part left which is the output.
 
